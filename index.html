@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Psychopatologia pracy — test</title>
+<style>
+:root {
+  --bg1:#fff1f2;
+  --bg2:#f8fafc;
+  --card:#ffffff;
+  --text:#171827;
+  --muted:#6b7280;
+  --primary:#c8102e;
+  --primary-dark:#780019;
+  --primary-soft:#ffe4e8;
+  --good:#16a34a;
+  --good-bg:#dcfce7;
+  --bad:#dc2626;
+  --bad-bg:#fee2e2;
+  --warn:#d97706;
+  --warn-bg:#fffbeb;
+  --border:#e5e7eb;
+  --shadow:0 22px 60px rgba(31,41,55,.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Inter,Segoe UI,Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at top left,rgba(200,16,46,.19),transparent 34%),
+    radial-gradient(circle at bottom right,rgba(120,0,25,.13),transparent 34%),
+    linear-gradient(135deg,var(--bg1),var(--bg2));
+}
+button{font:inherit}
+.app{max-width:1040px;margin:0 auto;padding:28px}
+.screen{display:none}
+.screen.active{display:block}
+.hero{
+  min-height:88vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.hero-card{
+  width:100%;
+  max-width:900px;
+  padding:58px 54px;
+  text-align:center;
+  background:rgba(255,255,255,.91);
+  backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.78);
+  border-radius:32px;
+  box-shadow:var(--shadow);
+}
+h1{
+  margin:0 0 16px;
+  font-size:clamp(38px,5vw,66px);
+  line-height:1;
+  letter-spacing:-.05em;
+}
+.subtitle{
+  max-width:740px;
+  margin:0 auto;
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.6;
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin:32px 0;
+}
+.stat{
+  padding:17px 14px;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:18px;
+}
+.stat strong{
+  display:block;
+  font-size:28px;
+  color:var(--primary-dark);
+}
+.stat span{font-size:13px;color:var(--muted)}
+.start-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  max-width:700px;
+  margin:0 auto;
+}
+.mode-button{
+  min-height:92px;
+  padding:18px 20px;
+  border:0;
+  border-radius:20px;
+  cursor:pointer;
+  text-align:left;
+  color:white;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  box-shadow:0 14px 32px rgba(200,16,46,.22);
+  transition:.18s;
+}
+.mode-button:hover{transform:translateY(-2px)}
+.mode-button.secondary{
+  color:#49101b;
+  background:#fff;
+  border:2px solid #fecdd3;
+  box-shadow:none;
+}
+.mode-button b{display:block;font-size:18px;margin-bottom:5px}
+.mode-button span{display:block;font-size:13px;line-height:1.4;opacity:.88}
+.quiz-shell{max-width:860px;margin:24px auto}
+.top-nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:15px;
+}
+.pill{
+  display:inline-flex;
+  align-items:center;
+  padding:10px 14px;
+  margin-right:7px;
+  border-radius:999px;
+  background:rgba(255,255,255,.88);
+  border:1px solid rgba(255,255,255,.85);
+  font-weight:800;
+  color:#374151;
+}
+.small-button{
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:11px 15px;
+  background:#fff;
+  color:#374151;
+  font-weight:850;
+  cursor:pointer;
+}
+.progress-wrap{
+  width:100%;
+  height:12px;
+  margin:14px 0 24px;
+  overflow:hidden;
+  border-radius:999px;
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(255,255,255,.82);
+}
+.progress{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--primary),var(--primary-dark));
+  transition:.25s;
+}
+.question-card{
+  padding:32px;
+  border-radius:28px;
+  background:rgba(255,255,255,.95);
+  border:1px solid rgba(255,255,255,.84);
+  box-shadow:var(--shadow);
+}
+.category{
+  display:inline-flex;
+  margin-bottom:13px;
+  padding:7px 11px;
+  border-radius:999px;
+  background:var(--primary-soft);
+  color:#9f1239;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+}
+.question-title{
+  margin:0 0 23px;
+  font-size:27px;
+  line-height:1.27;
+  letter-spacing:-.025em;
+}
+.answer{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  width:100%;
+  margin:10px 0;
+  padding:16px;
+  border:2px solid var(--border);
+  border-radius:18px;
+  background:#fff;
+  cursor:pointer;
+  line-height:1.43;
+  transition:.16s;
+}
+.answer:hover{border-color:#fecdd3;transform:translateY(-1px)}
+.answer.locked{cursor:default;transform:none}
+.letter{
+  flex:0 0 36px;
+  width:36px;
+  height:36px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:var(--primary-soft);
+  color:#9f1239;
+  font-weight:950;
+}
+.answer-text{padding-top:7px}
+.answer.correct{border-color:var(--good);background:var(--good-bg)}
+.answer.correct .letter{background:var(--good);color:white}
+.answer.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.answer.wrong .letter{background:var(--bad);color:white}
+.feedback{
+  display:none;
+  margin-top:18px;
+  padding:16px;
+  border-radius:18px;
+  font-weight:900;
+}
+.feedback.good{display:block;background:var(--good-bg);color:#166534}
+.feedback.bad{display:block;background:var(--bad-bg);color:#991b1b}
+.question-actions{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:22px;
+  flex-wrap:wrap;
+}
+.action-group{display:flex;gap:10px;flex-wrap:wrap}
+.primary-button,.report-button{
+  border:0;
+  border-radius:15px;
+  padding:14px 18px;
+  font-weight:900;
+  cursor:pointer;
+}
+.primary-button{
+  color:white;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  box-shadow:0 10px 25px rgba(200,16,46,.2);
+}
+.primary-button:disabled{opacity:.5;cursor:not-allowed}
+.report-button{
+  color:#92400e;
+  background:var(--warn-bg);
+  border:1px solid #fde68a;
+}
+.result-card{
+  max-width:780px;
+  margin:40px auto;
+  padding:44px;
+  text-align:center;
+  border-radius:32px;
+  background:rgba(255,255,255,.95);
+  border:1px solid rgba(255,255,255,.85);
+  box-shadow:var(--shadow);
+}
+.result-label{
+  display:inline-flex;
+  padding:8px 12px;
+  border-radius:999px;
+  color:#9f1239;
+  background:var(--primary-soft);
+  font-size:13px;
+  font-weight:900;
+}
+.result-score{
+  margin:14px 0 4px;
+  color:var(--primary-dark);
+  font-size:70px;
+  line-height:1;
+  font-weight:1000;
+  letter-spacing:-.06em;
+}
+.result-percent{
+  display:inline-flex;
+  padding:9px 15px;
+  border-radius:999px;
+  background:#fff1f2;
+  color:#9f1239;
+  font-weight:900;
+}
+.result-description{
+  max-width:580px;
+  margin:18px auto 24px;
+  color:var(--muted);
+  line-height:1.55;
+}
+.result-actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.retry-button{
+  border:0;
+  border-radius:16px;
+  padding:15px 19px;
+  color:white;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  font-weight:900;
+  cursor:pointer;
+}
+.retry-button[hidden]{display:none}
+.review{
+  max-height:360px;
+  margin-top:28px;
+  padding-top:17px;
+  overflow:auto;
+  text-align:left;
+  border-top:1px solid var(--border);
+}
+.review-item{
+  padding:13px 0;
+  border-bottom:1px solid #f1f5f9;
+}
+.review-item b{display:block;margin-bottom:5px;line-height:1.35}
+.ok{color:var(--good);font-weight:900}
+.no{color:var(--bad);font-weight:900}
+@media(max-width:760px){
+  .app{padding:15px}
+  .hero-card{padding:34px 22px}
+  .stats{grid-template-columns:1fr}
+  .start-actions{grid-template-columns:1fr}
+  .question-card{padding:22px}
+  .question-title{font-size:22px}
+  .top-nav{align-items:flex-start;flex-direction:column}
+  .question-actions{flex-direction:column}
+  .action-group{width:100%}
+  .action-group button{flex:1}
+  .result-card{padding:30px 21px}
+  .result-score{font-size:58px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<section id="startScreen" class="screen active hero">
+  <div class="hero-card">
+    <h1>Psychopatologia pracy</h1>
+    <p class="subtitle">Jeśli znajdziesz błędne pytanie, zgłoś je za pomocą przycisku „Zgłoś pytanie”.</p>
+
+    <div class="stats">
+      <div class="stat"><strong>84</strong><span>pytania w bazie</span></div>
+      <div class="stat"><strong>20</strong><span>pytań w przykładowym teście</span></div>
+      <div class="stat"><strong>1</strong><span>poprawna odpowiedź</span></div>
+    </div>
+
+    <div class="start-actions">
+      <button class="mode-button" onclick="startSampleTest()">
+        <b>Rozwiąż przykładowy test</b>
+        <span>20 losowych pytań wybranych z całej bazy.</span>
+      </button>
+      <button class="mode-button secondary" onclick="startFullTest()">
+        <b>Rozwiąż całą bazę</b>
+        <span>Wszystkie 84 pytania w losowej kolejności.</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section id="quizScreen" class="screen">
+  <div class="quiz-shell">
+    <div class="top-nav">
+      <div>
+        <span class="pill" id="counterPill">Pytanie 1 / 1</span>
+        <span class="pill" id="scorePill">Wynik: 0</span>
+      </div>
+      <button class="small-button" onclick="finishEarly()">Zakończ test</button>
+    </div>
+
+    <div class="progress-wrap"><div id="progress" class="progress"></div></div>
+    <div id="questionCard" class="question-card"></div>
+  </div>
+</section>
+
+<section id="resultScreen" class="screen">
+  <div class="result-card">
+    <span class="result-label">WYNIK KOŃCOWY</span>
+    <div id="finalScore" class="result-score">0 / 0</div>
+    <div id="finalPercent" class="result-percent">0%</div>
+    <p id="resultDescription" class="result-description"></p>
+
+    <div class="result-actions">
+      <button class="small-button" onclick="goHome()">Zakończ</button>
+      <button id="wrongTestButton" class="retry-button" onclick="startWrongTest()">
+        Rozwiąż test z błędnych pytań
+      </button>
+    </div>
+
+    <div id="review" class="review"></div>
+  </div>
+</section>
+
+</div>
+
+<script>
+const DATA = [{"id": "g1", "q": "Karta Systematycznej Oceny Ryzyka Wieńcowego NIE uwzględnia:", "answers": [{"text": "objawów depresji", "correct": true}, {"text": "objawów zespołu metabolicznego, np. poziomu cholesterolu", "correct": false}, {"text": "płci", "correct": false}, {"text": "wieku", "correct": false}]}, {"id": "g2", "q": "Badania prowadzone przez Dudka (2003) wśród polskich policjantów wskazują na to, że największym czynnikiem traumatyzującym dla tej grupy zawodowej jest:", "answers": [{"text": "zranienie, uszczerbek na zdrowiu", "correct": false}, {"text": "użycie broni", "correct": false}, {"text": "znalezienie się we wrogim tłumie", "correct": false}, {"text": "makabryczne widoki", "correct": true}]}, {"id": "g3", "q": "Model braku równowagi między wysiłkiem a nagrodą (Effort-Reward Imbalance Model) w miejscu pracy Siegrista dotyczy następującego rodzaju stresu:", "answers": [{"text": "stresu traumatycznego", "correct": false}, {"text": "wydarzeń życiowych", "correct": false}, {"text": "utrapień dnia codziennego", "correct": true}, {"text": "okresów wolnych od pracy, np. przerwy świątecznej i noworocznej", "correct": false}]}, {"id": "g4", "q": "W Modelu wymagania-kontrola Karaska następujący układ warunków prowadzi w największym stopniu do wzrostu zachorowalności i śmiertelności na chorobę wieńcową:", "answers": [{"text": "duża kontrola – małe wymagania", "correct": false}, {"text": "duża kontrola – duże wymagania", "correct": false}, {"text": "mała kontrola – małe wymagania", "correct": false}, {"text": "mała kontrola – duże wymaganiań", "correct": true}]}, {"id": "g5", "q": "W kwestionariuszu samopoznania K. Wrześniewskiego mierzącym osobowościowe predyspozycje do choroby, zaznaczenie pozycji testu „Jestem bardzo niecierpliwy, kiedy mam na coś czekać” świadczy o:", "answers": [{"text": "Wzorze zachowania A", "correct": true}, {"text": "Wzorze zachowania B", "correct": false}, {"text": "Wzorze zachowania C", "correct": false}, {"text": "Wzorze zachowania D", "correct": false}]}, {"id": "g6", "q": "Zgodnie z zaleceniami WHO \"dawka\" regularnej aktywności fizycznej wpływająca na zdrowie to:", "answers": [{"text": "godzina umiarkowanego wysiłku fizycznego w ciągu tygodnia", "correct": false}, {"text": "2 godziny umiarkowanego wysiłku fizycznego w ciągu tygodnia", "correct": false}, {"text": "2 i pół godziny umiarkowanego wysiłku fizycznego w ciągu tygodnia", "correct": true}, {"text": "3 godziny umiarkowanego wysiłku fizycznego w ciągu tygodnia", "correct": false}]}, {"id": "g7", "q": "Minimalna interwencja antynikotynowa (MIA) w medycynie składa się z pięciu kroków. Pierwszy z nich – pytaj, polega na tym, że:", "answers": [{"text": "pacjent palący papierosy powinien otrzymać poradę dotyczącą zaprzestania palenia, uwzględniającą jego sytuację zdrowotną i życiową|", "correct": false}, {"text": "lekarz powinien zapytać pacjenta o gotowość do zaprzestania palenia", "correct": false}, {"text": "podczas każdej wizyty lekarz powinien dowiedzieć się, czy pacjent pali papierosy", "correct": true}, {"text": "lekarz powinien zaplanować wizyty kontrolne po rzuceniu palenia przez pacjenta", "correct": false}]}, {"id": "g8", "q": "Zjawisko wtórnych zysków z choroby polega na tym, że:", "answers": [{"text": "tylko dzięki chorobie możliwe jest zaspokajanie ważnych dla pacjenta potrzeb", "correct": true}, {"text": "pacjent doświadcza więcej korzyści niż strat w sytuacji choroby", "correct": false}, {"text": "pacjent nie przyjmuje do wiadomości negatywnych konsekwencji choroby", "correct": false}, {"text": "pacjent poszukuje informacji w celu redukcji lęku", "correct": false}]}, {"id": "g9", "q": "Reakcja zaprzeczania chorobie:", "answers": [{"text": "może ulec zmianie pod wpływem logicznej argumentacji", "correct": false}, {"text": "nie pozwala na zbudowanie obrazu własnej choroby", "correct": true}, {"text": "nie ma znaczenia dla podejmowanych zachowań zdrowotnych", "correct": false}, {"text": "jest reakcją świadomą", "correct": false}]}, {"id": "g10", "q": "Trzecią funkcją radzenia ze stresem jest radzenie sobie skoncentrowane na znaczeniu. Przykładem takiego radzenia sobie w chorobie jest:", "answers": [{"text": "unikanie rozmowy o chorobie", "correct": false}, {"text": "stosowanie używek, aby oderwać się od choroby", "correct": false}, {"text": "wykonywanie regularnych badań lekarskich", "correct": false}, {"text": "odkrywanie sensu zachorowania", "correct": true}]}, {"id": "g11", "q": "Depresja w grupie chorych somatycznie w porównaniu z populacją ogólną jest diagnozowana:", "answers": [{"text": "rzadziej", "correct": false}, {"text": "w takim samym stopniu", "correct": false}, {"text": "częściej", "correct": true}, {"text": "brak jest badań w tym obszarze", "correct": false}]}, {"id": "g12", "q": "Emocje pozytywne zgodnie ze Zmodyfikowanym modelem transakcji stresowej Folkman dotyczą:", "answers": [{"text": "tylko oceny poznawczej", "correct": false}, {"text": "tylko wyniku emocjonalnego wydarzenia z korzystnym wynikiem w ogóle", "correct": false}, {"text": "tylko wyniku emocjonalnego wydarzenia z niekorzystnym wynikiem w ogóle", "correct": false}, {"text": "każdego opisanego etapu procesu radzenia sobie", "correct": true}]}, {"id": "g13", "q": "Przykładem sposobu definiowania stresu w medycynie (tzw, stres fizjologiczny) jest", "answers": [{"text": "Teoria Selyego, Który opisał reakcję stresową za pomocą Ogólnego Zespołu Adaptacyjnego", "correct": true}, {"text": "Skala Ponownego Przystosowana Życiowego Holmesa i Rahe'a", "correct": false}, {"text": "Model wymagania-kontrola Karaska", "correct": false}, {"text": "Model braku równowagi między wysiłkiem a nagrodą w miejscu pracy Siegrista", "correct": false}]}, {"id": "g14", "q": "Wzór zachowania A opisany przez Rosenmana i Friedmana to sposób regulacji stosunków z otoczeniem, jego charakterystyczną cechą jest", "answers": [{"text": "tendencja do uległości", "correct": false}, {"text": "potrzeba rywalizacji i osiągnięć", "correct": true}, {"text": "agresja wroga (zadawanie bólu bądź wyrządzenie krzywdy)", "correct": false}, {"text": "spokój i bierność", "correct": false}]}, {"id": "g15", "q": "Model wymagania-kontrola Karaska dotyczy następującego rodzaju stresu.", "answers": [{"text": "stresu traumatycznego", "correct": false}, {"text": "wydarzeń życiowych", "correct": false}, {"text": "utrapień dnia codziennego", "correct": true}, {"text": "okresów wolnych od pracy, np. przerwy świątecznej i noworocznej", "correct": false}]}, {"id": "g16", "q": "Metaanalıza badań dotyczących aktywności fizycznej wskazuje na to, że największy efekt zdrowotny (redukcja chorób sercowo-naczyniowych) jest związany z", "answers": [{"text": "aktywnością fizyczną w czasie pracy zawodowej (wśród osób wykonujących prace fizyczne)", "correct": false}, {"text": "wysokim poziomem aktywności fizycznej w czasie wolnym od pracy", "correct": true}, {"text": "umiarkowanym poziomem aktywności fizycznej", "correct": false}, {"text": "paleniem papierosów", "correct": false}]}, {"id": "g17", "q": "Wśród predyktorów depresji, lęku i stresu w okresie pandemii dominowały", "answers": [{"text": "zła jakość snu i płeć żeńska", "correct": true}, {"text": "brak bezpośrednich kontaktów społecznych", "correct": false}, {"text": "zły przepływ informacji pomiędzy pracownikami", "correct": false}, {"text": "plec męska i przeciązenie praca", "correct": false}]}, {"id": "g18", "q": "Prawda jest, że depresja", "answers": [{"text": "występuje na takim samym poziomie wśród osób chorych i w populacji", "correct": false}, {"text": "występuje jako czynnik ryzyka w Karcie Systematycznej Oceny Ryzyka Wieńcowego", "correct": false}, {"text": "wpływa na zwiększoną Śmiertelność pacjentów, także poprzez rezygnację ze zmiany stylu życia", "correct": true}, {"text": "nie ma związku z chorobami serca", "correct": false}]}, {"id": "g19", "q": "Wśród korzyści z pracy zdalnej menedżerowie wymieniają", "answers": [{"text": "większą motywację /kontrole podwładnych", "correct": false}, {"text": "oszczędność czasu", "correct": true}, {"text": "lepszą komunikację", "correct": false}, {"text": "większe poczucie przynależności do firmy", "correct": false}]}, {"id": "g20", "q": "Większy komfort pracy zdalnej  jest związany w największym stopniu z", "answers": [{"text": "rezygnacją z przyjętej rutyny", "correct": false}, {"text": "inwestycją w spotkania hybrydowe (sprzęt, równy udział uczestnictwa)", "correct": false}, {"text": "rezygnacja z bloków pracy własnej na rzecz pracy synchronicznej", "correct": false}, {"text": "wprowadzeniem bloków pracy własnej, wydłużeniem pracy asynchronicznej i większą liczbą przerw", "correct": true}]}, {"id": "g21", "q": "Tłumienie ekspresji emocji (hamowanie społeczne - ang, social inhibition) jest charakterystyczne dla", "answers": [{"text": "wzoru zachowania A", "correct": false}, {"text": "wzoru zachowania B", "correct": false}, {"text": "wzoru zachowania C", "correct": false}, {"text": "wzoru zachowania D", "correct": true}]}, {"id": "g22", "q": "Aby dostosować warunki pracy do potrzeb osób z depresją należy zadbać o to, aby pracownik", "answers": [{"text": "pracował na \"podwyższonych obrotach\"", "correct": false}, {"text": "nie miał czasu na rozmyślanie o chorobie", "correct": false}, {"text": "był równomiernie obciążony pracą", "correct": true}, {"text": "miał zaległości w pracy", "correct": false}]}, {"id": "g23", "q": "Który z poniższych przykładów wskazuje na wydarzenie życiowe", "answers": [{"text": "sięgnięcie po broń przez policjanta", "correct": false}, {"text": "zwolnienie Z pracy", "correct": true}, {"text": "trzęsienie ziemi", "correct": false}, {"text": "brak perspektywy awansu", "correct": false}]}, {"id": "g24", "q": "Wśród  barier na rynku pracy wobec osób chorych psychicznie wymienia się tzw deficyty wtórne. Są to:", "answers": [{"text": "deficyty związane z bezpośrednim wpływem choroby na funkcjonowanie w pracy", "correct": false}, {"text": "deficyty związane z negatywnymi reakcjami otoczenia na chorobę", "correct": true}, {"text": "bariery systemowe utrudniające zatrudnienie", "correct": false}, {"text": "niedostateczna liczba miejsc pracy przystosowania do osób z zaburzeniami psychicznymi", "correct": false}]}, {"id": "n1", "q": "Ujęcie szerokie psychopatologii pracy obejmuje:", "answers": [{"text": "wyłącznie zaburzenia psychiczne spełniające kryteria diagnostyczne", "correct": false}, {"text": "jedynie następstwa wypadków przy pracy", "correct": false}, {"text": "zaburzenia psychiczne, dolegliwości psychosomatyczne, wypadki oraz problemy rodzinne i społeczne związane z pracą", "correct": true}, {"text": "wyłącznie wpływ zaburzeń psychicznych pracownika na jego efektywność", "correct": false}]}, {"id": "n2", "q": "Według Hansa Selyego stres jest:", "answers": [{"text": "niespecyficzną reakcją organizmu na działanie szkodliwego bodźca", "correct": true}, {"text": "wyłącznie świadomą oceną zagrożenia", "correct": false}, {"text": "reakcją występującą tylko w sytuacjach traumatycznych", "correct": false}, {"text": "zaburzeniem psychicznym powstającym wskutek przeciążenia zawodowego", "correct": false}]}, {"id": "n3", "q": "Szybka droga reakcji stresowej przebiega przede wszystkim przez:", "answers": [{"text": "przysadkę i korę nadnerczy", "correct": false}, {"text": "współczulny układ nerwowy i rdzeń nadnerczy", "correct": true}, {"text": "przywspółczulny układ nerwowy i tarczycę", "correct": false}, {"text": "hipokamp i korę przedczołową", "correct": false}]}, {"id": "n4", "q": "Prawidłowa kolejność aktywacji wolniejszej, hormonalnej drogi stresu to:", "answers": [{"text": "ACTH – CRH – kortyzol", "correct": false}, {"text": "kortyzol – ACTH – CRH", "correct": false}, {"text": "CRH – kortyzol – ACTH", "correct": false}, {"text": "CRH – ACTH – kortyzol", "correct": true}]}, {"id": "n5", "q": "Który zestaw reakcji jest najbardziej charakterystyczny dla działania adrenaliny i noradrenaliny w ostrej reakcji stresowej?", "answers": [{"text": "spadek tętna, obniżenie glikemii i zahamowanie lipolizy", "correct": false}, {"text": "wzrost tętna, hiperglikemia i mobilizacja zasobów energetycznych", "correct": true}, {"text": "obniżenie ciśnienia i wzrost wydzielania insuliny", "correct": false}, {"text": "senność, analgezja i zmniejszenie napięcia mięśniowego", "correct": false}]}, {"id": "n6", "q": "Jednym z następstw aktywacji wolniejszej drogi stresowej jest:", "answers": [{"text": "analgezja i uruchomienie rezerw energetycznych", "correct": true}, {"text": "natychmiastowe zahamowanie wydzielania kortyzolu", "correct": false}, {"text": "spadek poziomu glukozy we krwi", "correct": false}, {"text": "wyłączenie reakcji układu współczulnego", "correct": false}]}, {"id": "n7", "q": "W klasyfikacji stresorów Janisa wyróżnia się:", "answers": [{"text": "stresory biologiczne, społeczne i poznawcze", "correct": false}, {"text": "sytuacje ekstremalne, wydarzenia życiowe i codzienne utrapienia", "correct": true}, {"text": "stres pozytywny, neutralny i negatywny", "correct": false}, {"text": "stres ostry, przewlekły i pourazowy", "correct": false}]}, {"id": "n8", "q": "Który element jest konieczny, aby objawy pourazowe można było uznać za klinicznie istotne PTSD?", "answers": [{"text": "wystąpienie objawów wyłącznie w miejscu pracy", "correct": false}, {"text": "obecność jedynie okresowych koszmarów", "correct": false}, {"text": "istotne zakłócenie codziennego funkcjonowania", "correct": true}, {"text": "brak jakichkolwiek objawów lękowych", "correct": false}]}, {"id": "n9", "q": "Nawracające wspomnienia, koszmary i flashbacki po traumie należą przede wszystkim do grupy objawów:", "answers": [{"text": "intruzji", "correct": true}, {"text": "unikania", "correct": false}, {"text": "dysocjacji zawodowej", "correct": false}, {"text": "wyczerpania emocjonalnego", "correct": false}]}, {"id": "n10", "q": "Wyniki badań po trzęsieniu ziemi w Northridge wskazywały przede wszystkim na:", "answers": [{"text": "brak bezpośredniego wpływu stresu na układ krążenia", "correct": false}, {"text": "nagły wzrost zgonów sercowych w dniu katastrofy", "correct": true}, {"text": "spadek liczby hospitalizacji kardiologicznych", "correct": false}, {"text": "występowanie skutków zdrowotnych dopiero po kilku latach", "correct": false}]}, {"id": "n11", "q": "Badania następstw ataku na World Trade Center wskazały, że:", "answers": [{"text": "skutki zdrowotne stresu znikają bezpośrednio po zakończeniu zagrożenia", "correct": false}, {"text": "problemy zdrowotne związane ze stresem mogą ujawniać się także wiele miesięcy po zdarzeniu", "correct": true}, {"text": "odległe skutki stresu dotyczą wyłącznie osób bezpośrednio rannych", "correct": false}, {"text": "stres po katastrofie nie wpływa na zdrowie somatyczne", "correct": false}]}, {"id": "n12", "q": "Badania DeLongis, Folkman i Lazarusa nad codziennymi utrapieniami wskazały, że:", "answers": [{"text": "drobne, powtarzające się trudności mogą silnie wiązać się z dolegliwościami somatycznymi", "correct": true}, {"text": "wyłącznie wielkie wydarzenia życiowe mają znaczenie dla zdrowia", "correct": false}, {"text": "codzienne utrapienia nie są związane z samopoczuciem", "correct": false}, {"text": "wpływ codziennych utrapień występuje tylko u osób chorych przewlekle", "correct": false}]}, {"id": "n13", "q": "Wysoki wynik w Skali Ponownego Przystosowania Społecznego Holmesa i Rahe'a oznacza:", "answers": [{"text": "wysoką odporność na stres", "correct": false}, {"text": "małe prawdopodobieństwo problemów zdrowotnych", "correct": false}, {"text": "duże nagromadzenie zmian życiowych i podwyższone ryzyko pogorszenia zdrowia", "correct": true}, {"text": "występowanie zaburzenia stresowego pourazowego", "correct": false}]}, {"id": "n14", "q": "Określenie „holiday heart attack” odnosi się do:", "answers": [{"text": "spadku liczby zawałów w okresie urlopowym", "correct": false}, {"text": "wzrostu częstości zdarzeń sercowych w okresie świąteczno-noworocznym", "correct": true}, {"text": "chorób serca występujących wyłącznie podczas podróży", "correct": false}, {"text": "ochronnego wpływu odpoczynku świątecznego na układ krążenia", "correct": false}]}, {"id": "n15", "q": "Podstawowa różnica między modelem Karaska a modelem Siegrista polega na tym, że:", "answers": [{"text": "Karasek opisuje traumę, a Siegrist codzienne utrapienia", "correct": false}, {"text": "Karasek koncentruje się na wymaganiach i kontroli, a Siegrist na relacji między wysiłkiem i nagrodą", "correct": true}, {"text": "Karasek dotyczy wyłącznie pracowników fizycznych, a Siegrist umysłowych", "correct": false}, {"text": "Karasek uwzględnia osobowość, a Siegrist wyłącznie czynniki biologiczne", "correct": false}]}, {"id": "n16", "q": "W modelu Siegrista nagroda za pracę obejmuje przede wszystkim:", "answers": [{"text": "wyłącznie wysokość wynagrodzenia", "correct": false}, {"text": "wynagrodzenie, uznanie, możliwości awansu i bezpieczeństwo zatrudnienia", "correct": true}, {"text": "jedynie autonomię wykonywania zadań", "correct": false}, {"text": "liczbę godzin wolnych od pracy", "correct": false}]}, {"id": "n17", "q": "Przemotywowanie (overcommitment) w modelu Siegrista oznacza:", "answers": [{"text": "trudność w odmawianiu i nadmierne angażowanie się w pracę", "correct": true}, {"text": "niski poziom identyfikacji z organizacją", "correct": false}, {"text": "unikanie odpowiedzialności zawodowej", "correct": false}, {"text": "brak oczekiwań dotyczących nagrody", "correct": false}]}, {"id": "n18", "q": "Za najbardziej toksyczny dla zdrowia element Wzoru Zachowania A uznaje się:", "answers": [{"text": "wysoką aktywność", "correct": false}, {"text": "dążenie do osiągnięć", "correct": false}, {"text": "wrogość", "correct": true}, {"text": "szybkie tempo mówienia", "correct": false}]}, {"id": "n19", "q": "Wzór Zachowania D tworzą dwa podstawowe wymiary:", "answers": [{"text": "wrogość i potrzeba rywalizacji", "correct": false}, {"text": "negatywny afekt i hamowanie społeczne", "correct": true}, {"text": "lęk i impulsywność", "correct": false}, {"text": "perfekcjonizm i zależność", "correct": false}]}, {"id": "n20", "q": "Skala DS14 służy do pomiaru:", "answers": [{"text": "Wzoru Zachowania A", "correct": false}, {"text": "nasilenia stresu pourazowego", "correct": false}, {"text": "Wzoru Zachowania D", "correct": true}, {"text": "ryzyka uzależnienia od pracy", "correct": false}]}, {"id": "n21", "q": "U pacjentów kardiologicznych Wzór Zachowania D wiąże się przede wszystkim z:", "answers": [{"text": "lepszym przestrzeganiem zaleceń lekarskich", "correct": false}, {"text": "lepszym rokowaniem po zawale", "correct": false}, {"text": "gorszą jakością życia i większym ryzykiem kolejnych zdarzeń sercowych", "correct": true}, {"text": "brakiem związku z przebiegiem choroby", "correct": false}]}, {"id": "n22", "q": "Zachowanie ryzykowne dla zdrowia to:", "answers": [{"text": "każde działanie o niepewnym wyniku", "correct": false}, {"text": "działanie, którego negatywne konsekwencje zdrowotne są potwierdzone naukowo", "correct": true}, {"text": "wyłącznie zachowanie niezgodne z prawem", "correct": false}, {"text": "każde zachowanie podejmowane pod wpływem emocji", "correct": false}]}, {"id": "n23", "q": "Przestrzeganie diety śródziemnomorskiej wiąże się przede wszystkim z:", "answers": [{"text": "wzrostem ogólnej śmiertelności", "correct": false}, {"text": "obniżeniem ryzyka chorób sercowo-naczyniowych i ogólnej śmiertelności", "correct": true}, {"text": "brakiem wpływu na zdrowie układu krążenia", "correct": false}, {"text": "korzyściami wyłącznie u osób po zawale", "correct": false}]}, {"id": "n24", "q": "Zmniejszenie spożycia soli może prowadzić do:", "answers": [{"text": "zmniejszenia liczby zdarzeń sercowo-naczyniowych", "correct": true}, {"text": "wzrostu ciśnienia tętniczego", "correct": false}, {"text": "zwiększenia ryzyka zawału", "correct": false}, {"text": "braku jakichkolwiek zmian zdrowotnych", "correct": false}]}, {"id": "n25", "q": "Jedna standardowa porcja alkoholu zawiera około:", "answers": [{"text": "5 g czystego etanolu", "correct": false}, {"text": "10 g czystego etanolu", "correct": true}, {"text": "20 g czystego etanolu", "correct": false}, {"text": "40 g czystego etanolu", "correct": false}]}, {"id": "n26", "q": "Wyniki badań nad siedzącym trybem życia wskazują, że:", "answers": [{"text": "jego szkodliwy wpływ całkowicie znosi wieczorny trening", "correct": false}, {"text": "długotrwałe siedzenie może zwiększać ryzyko zdrowotne niezależnie od podejmowanej aktywności fizycznej", "correct": true}, {"text": "siedzenie jest szkodliwe tylko dla osób z otyłością", "correct": false}, {"text": "liczy się wyłącznie całkowity brak sportu", "correct": false}]}, {"id": "n27", "q": "Bierne palenie wpływa na układ krążenia poprzez:", "answers": [{"text": "obniżenie ryzyka chorób serca", "correct": false}, {"text": "zwiększenie ryzyka chorób sercowo-naczyniowych", "correct": true}, {"text": "brak mierzalnego wpływu na zdrowie", "correct": false}, {"text": "ochronę przed skutkami aktywnego palenia", "correct": false}]}, {"id": "n28", "q": "W minimalnej interwencji antynikotynowej krok „Pomagaj” oznacza przede wszystkim:", "answers": [{"text": "ocenę, czy pacjent pali papierosy", "correct": false}, {"text": "udzielanie wsparcia i pomoc w przygotowaniu planu rzucenia palenia", "correct": true}, {"text": "wyłącznie przekazanie informacji o szkodliwości palenia", "correct": false}, {"text": "zakończenie kontaktu z pacjentem po udzieleniu porady", "correct": false}]}, {"id": "n29", "q": "Nadmierna kontrola społeczna wobec chorego może:", "answers": [{"text": "zawsze poprawiać przestrzeganie zaleceń", "correct": false}, {"text": "wywoływać opór i nasilać zachowania ryzykowne", "correct": true}, {"text": "nie mieć związku z zachowaniem pacjenta", "correct": false}, {"text": "zastępować profesjonalną pomoc psychologiczną", "correct": false}]}, {"id": "n30", "q": "Interwencje psychologiczne po zawale serca powinny być:", "answers": [{"text": "stosowane automatycznie u wszystkich pacjentów", "correct": false}, {"text": "kierowane przede wszystkim do pacjentów przejawiających objawy lękowe lub depresyjne", "correct": true}, {"text": "ograniczone wyłącznie do farmakoterapii", "correct": false}, {"text": "prowadzone dopiero kilka lat po zawale", "correct": false}]}, {"id": "n31", "q": "Depresję u pacjentów po zawale uznaje się za:", "answers": [{"text": "niezależny czynnik ryzyka gorszego rokowania i śmierci", "correct": true}, {"text": "objaw niemający znaczenia dla przebiegu choroby", "correct": false}, {"text": "wyłącznie skutek uboczny leczenia farmakologicznego", "correct": false}, {"text": "czynnik ochronny, ponieważ ogranicza aktywność pacjenta", "correct": false}]}, {"id": "n32", "q": "Mechanizmem łączącym przewlekły stres, depresję i choroby serca może być:", "answers": [{"text": "trwałe obniżenie stanu zapalnego", "correct": false}, {"text": "nadmierna aktywacja procesów zapalnych", "correct": true}, {"text": "całkowite zahamowanie wydzielania hormonów stresu", "correct": false}, {"text": "wzrost odporności organizmu", "correct": false}]}, {"id": "n33", "q": "Depresja może pogarszać przebieg choroby somatycznej, ponieważ:", "answers": [{"text": "zwiększa motywację do leczenia", "correct": false}, {"text": "sprzyja rezygnacji z diety, aktywności fizycznej i regularnego przyjmowania leków", "correct": true}, {"text": "zmniejsza ryzyko zachowań antyzdrowotnych", "correct": false}, {"text": "nie wpływa na przestrzeganie zaleceń", "correct": false}]}, {"id": "n34", "q": "U pacjentów kardiologicznych ćwiczenia aerobowe mogą:", "answers": [{"text": "nasilać objawy depresyjne", "correct": false}, {"text": "zmniejszać objawy depresji i wspierać rehabilitację", "correct": true}, {"text": "zastępować całe leczenie medyczne", "correct": false}, {"text": "być stosowane wyłącznie u osób bez objawów psychicznych", "correct": false}]}, {"id": "n35", "q": "Praca zdalna oznacza przede wszystkim:", "answers": [{"text": "wykonywanie obowiązków wyłącznie w siedzibie pracodawcy", "correct": false}, {"text": "wykonywanie obowiązków poza siedzibą firmy z wykorzystaniem technologii komunikacyjnych", "correct": true}, {"text": "pracę bez nadzoru i bez określonych celów", "correct": false}, {"text": "pracę wykonywaną wyłącznie przez osoby samozatrudnione", "correct": false}]}, {"id": "n36", "q": "Który czynnik był nowym stresorem podczas nagłego przejścia na pracę zdalną?", "answers": [{"text": "pełna dobrowolność wyboru tej formy pracy", "correct": false}, {"text": "brak problemów technicznych", "correct": false}, {"text": "przymusowe przejście na pracę zdalną i brak przygotowania", "correct": true}, {"text": "stały, bezpośredni kontakt ze współpracownikami", "correct": false}]}, {"id": "n37", "q": "W okresie pandemii szczególne obciążenie kobiet pracujących zdalnie wynikało z:", "answers": [{"text": "zmniejszenia liczby obowiązków domowych", "correct": false}, {"text": "jednoczesnego wzrostu obowiązków zawodowych i domowych", "correct": true}, {"text": "braku różnic w podziale obowiązków między płciami", "correct": false}, {"text": "ograniczenia czasu pracy zawodowej", "correct": false}]}, {"id": "n38", "q": "Zaburzenia snu w okresie pracy zdalnej:", "answers": [{"text": "nie miały związku z depresją", "correct": false}, {"text": "wiązały się ze zwiększonym ryzykiem rozwoju depresji", "correct": true}, {"text": "występowały wyłącznie u osób starszych", "correct": false}, {"text": "chroniły przed przeciążeniem pracą", "correct": false}]}, {"id": "n39", "q": "W badaniach nad pracą zdalną obawa o przyszłą sytuację finansową:", "answers": [{"text": "była mniej stresująca niż aktualne trudności", "correct": false}, {"text": "nie miała związku ze stresem", "correct": false}, {"text": "mogła być silniejszym źródłem stresu niż bieżąca sytuacja materialna", "correct": true}, {"text": "dotyczyła wyłącznie osób bezrobotnych", "correct": false}]}, {"id": "n40", "q": "Wyniki programu SHARE sugerowały, że praca zdalna poprawiała zdrowie psychiczne przede wszystkim u osób:", "answers": [{"text": "mieszkających z małymi dziećmi", "correct": false}, {"text": "niemających dzieci w gospodarstwie domowym", "correct": true}, {"text": "pracujących wyłącznie nocą", "correct": false}, {"text": "nieposiadających dostępu do internetu", "correct": false}]}, {"id": "n41", "q": "Paradoks restrykcji pandemicznych polegał na tym, że:", "answers": [{"text": "silniejsze restrykcje zawsze pogarszały zdrowie psychiczne", "correct": false}, {"text": "w części krajów surowsze restrykcje wiązały się z większym poczuciem bezpieczeństwa i lepszą oceną zdrowia psychicznego", "correct": true}, {"text": "brak restrykcji całkowicie eliminował stres", "correct": false}, {"text": "restrykcje miały znaczenie wyłącznie dla zdrowia fizycznego", "correct": false}]}, {"id": "n42", "q": "Do typowych wad pracy zdalnej wskazywanych przez menedżerów należały:", "answers": [{"text": "wzrost poczucia przynależności i łatwiejsza komunikacja", "correct": false}, {"text": "osamotnienie, osłabienie więzi zespołowych i utrudniony dostęp do wiedzy", "correct": true}, {"text": "skrócenie dnia pracy i brak problemów z motywowaniem", "correct": false}, {"text": "zwiększenie liczby kontaktów nieformalnych", "correct": false}]}, {"id": "n43", "q": "Przeładowanie cyfrowe po 2020 roku przejawiało się między innymi:", "answers": [{"text": "spadkiem liczby spotkań online", "correct": false}, {"text": "skróceniem dnia pracy", "correct": false}, {"text": "wzrostem liczby spotkań i wiadomości oraz częstszą pracą po godzinach", "correct": true}, {"text": "ograniczeniem komunikacji elektronicznej", "correct": false}]}, {"id": "n44", "q": "Wykluczenie cyfrowe w pracy hybrydowej może polegać na:", "answers": [{"text": "pomijaniu pracowników zdalnych podczas spotkań częściowo odbywających się w biurze", "correct": true}, {"text": "nadmiernym uczestnictwie osób zdalnych w decyzjach", "correct": false}, {"text": "całkowitym braku spotkań online", "correct": false}, {"text": "obowiązkowym korzystaniu wyłącznie z komunikacji pisemnej", "correct": false}]}, {"id": "n45", "q": "Praca asynchroniczna oznacza, że:", "answers": [{"text": "wszyscy muszą odpowiadać natychmiast", "correct": false}, {"text": "zadania mogą być wykonywane i komunikowane bez jednoczesnej obecności wszystkich pracowników", "correct": true}, {"text": "pracownik nie ma dostępu do informacji", "correct": false}, {"text": "cała praca odbywa się podczas wideokonferencji", "correct": false}]}, {"id": "n46", "q": "Praca może wspierać zdrowienie osób z zaburzeniami psychicznymi, ponieważ:", "answers": [{"text": "zwiększa izolację społeczną", "correct": false}, {"text": "nadaje strukturę dnia, wspiera kontakty społeczne i poczucie własnej wartości", "correct": true}, {"text": "eliminuje potrzebę leczenia", "correct": false}, {"text": "jest korzystna wyłącznie z powodów finansowych", "correct": false}]}, {"id": "n47", "q": "W ocenie pacjentów najważniejszą korzyścią z zatrudnienia była:", "answers": [{"text": "możliwość rywalizacji", "correct": false}, {"text": "stabilność finansowa", "correct": true}, {"text": "pełna niezależność od leczenia", "correct": false}, {"text": "brak kontaktów z innymi ludźmi", "correct": false}]}, {"id": "n48", "q": "Deficyty pierwotne ograniczające funkcjonowanie zawodowe osób z zaburzeniami psychicznymi wynikają z:", "answers": [{"text": "bezpośredniego wpływu objawów choroby", "correct": true}, {"text": "wyłącznie przepisów prawa", "correct": false}, {"text": "reakcji pracodawców i współpracowników", "correct": false}, {"text": "braku zachęt finansowych dla przedsiębiorstw", "correct": false}]}, {"id": "n49", "q": "Ograniczenia zewnętrzne w zatrudnieniu osób z zaburzeniami psychicznymi to przede wszystkim:", "answers": [{"text": "objawy poznawcze choroby", "correct": false}, {"text": "bariery systemowe i niedostosowane regulacje", "correct": true}, {"text": "ujemny bilans choroby", "correct": false}, {"text": "negatywny afekt pacjenta", "correct": false}]}, {"id": "n50", "q": "Pułapka świadczeń polega na tym, że osoba:", "answers": [{"text": "podejmuje pracę, aby zwiększyć wysokość renty", "correct": false}, {"text": "unika legalnego zatrudnienia z obawy przed utratą renty lub zasiłku", "correct": true}, {"text": "nie może korzystać z żadnego wsparcia społecznego", "correct": false}, {"text": "otrzymuje świadczenia wyłącznie po podjęciu zatrudnienia", "correct": false}]}, {"id": "n51", "q": "Które rozwiązanie stanowi korzyść finansową dla pracodawcy zatrudniającego osobę z niepełnosprawnością?", "answers": [{"text": "obowiązek zwiększenia wpłat na PFRON", "correct": false}, {"text": "brak możliwości uzyskania dofinansowania wynagrodzenia", "correct": false}, {"text": "możliwość otrzymania dofinansowania do wynagrodzenia i kosztów szkolenia", "correct": true}, {"text": "zakaz korzystania z ulg składkowych", "correct": false}]}, {"id": "n52", "q": "Spowolnienie psychoruchowe w depresji może prowadzić w pracy do:", "answers": [{"text": "przyspieszenia tempa wykonywania zadań", "correct": false}, {"text": "trudności komunikacyjnych, wolniejszej pracy i wzrostu ryzyka błędów", "correct": true}, {"text": "zwiększonej odporności na stres", "correct": false}, {"text": "lepszego zarządzania czasem", "correct": false}]}, {"id": "n53", "q": "Dostosowanie warunków pracy do potrzeb osoby z depresją powinno obejmować:", "answers": [{"text": "zwiększenie presji czasu", "correct": false}, {"text": "dopuszczanie do narastania zaległości", "correct": false}, {"text": "ograniczenie presji czasu i równomierne rozłożenie obowiązków", "correct": true}, {"text": "stałe powierzanie zadań wymagających błyskawicznych decyzji", "correct": false}]}, {"id": "n54", "q": "Włączenie psychoterapii do leczenia depresji może poprawiać funkcjonowanie zawodowe poprzez:", "answers": [{"text": "zwiększenie absencji", "correct": false}, {"text": "obniżenie kompetencji społecznych", "correct": false}, {"text": "zwiększenie produktywności i zmniejszenie absentyzmu", "correct": true}, {"text": "zastąpienie wszystkich form leczenia medycznego", "correct": false}]}, {"id": "n55", "q": "Zasada 20–60–20 w odniesieniu do osób ze schizofrenią oznacza, że:", "answers": [{"text": "wszyscy chorzy wymagają tego samego rodzaju zatrudnienia", "correct": false}, {"text": "część może pracować bez wsparcia, większość potrzebuje zatrudnienia wspieranego, a część indywidualnej rehabilitacji", "correct": true}, {"text": "20% chorych pracuje zdalnie, 60% hybrydowo, a 20% stacjonarnie", "correct": false}, {"text": "60% chorych nie może podejmować żadnej aktywności zawodowej", "correct": false}]}, {"id": "n56", "q": "Do zaburzeń funkcji poznawczych utrudniających pracę osobom ze schizofrenią należą:", "answers": [{"text": "lepsza pamięć robocza i szybsze przetwarzanie informacji", "correct": false}, {"text": "osłabienie uczenia się, pamięci operacyjnej i szybkości przetwarzania informacji", "correct": true}, {"text": "wyłącznie trudności wzrokowe", "correct": false}, {"text": "jedynie nadmierna motywacja do działania", "correct": false}]}, {"id": "n57", "q": "Objawy negatywne schizofrenii mogą obniżać funkcjonowanie zawodowe poprzez:", "answers": [{"text": "wzrost wytrwałości i aspiracji zawodowych", "correct": false}, {"text": "trudności w nawiązywaniu kontaktów, adaptacji do zmian i pracy zespołowej", "correct": true}, {"text": "poprawę szybkości podejmowania decyzji", "correct": false}, {"text": "zwiększoną potrzebę rywalizacji", "correct": false}]}, {"id": "n58", "q": "Który zestaw prawidłowo przedstawia wymiary reprezentacji choroby w teorii Leventhala?", "answers": [{"text": "przyczyny, istota, konsekwencje, przebieg oraz kontrolowalność i leczenie", "correct": true}, {"text": "wyłącznie objawy i leczenie", "correct": false}, {"text": "emocje, temperament, inteligencja, motywacja i osobowość", "correct": false}, {"text": "diagnoza, hospitalizacja, zwolnienie, rehabilitacja i renta", "correct": false}]}, {"id": "n59", "q": "Obraz Własnej Choroby (OWCh) jest ważny, ponieważ:", "answers": [{"text": "nie ma wpływu na zachowania zdrowotne", "correct": false}, {"text": "subiektywne przekonania pacjenta mogą regulować jego decyzje dotyczące leczenia", "correct": true}, {"text": "jest zawsze zgodny z dokumentacją medyczną", "correct": false}, {"text": "powstaje wyłącznie u osób hospitalizowanych", "correct": false}]}, {"id": "n60", "q": "Dodatni bilans choroby oznacza, że:", "answers": [{"text": "straty związane z chorobą przewyższają wszystkie korzyści", "correct": false}, {"text": "pacjent jest silnie zmotywowany do szybkiego powrotu do zdrowia", "correct": false}, {"text": "postrzegane korzyści z choroby przewyższają straty, co może osłabiać motywację do leczenia", "correct": true}, {"text": "pacjent nie dostrzega żadnych następstw choroby", "correct": false}]}];
+const SAMPLE_SIZE = 20;
+
+let activeQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let locked = false;
+let attemptResults = [];
+let wrongQuestionIds = [];
+
+function shuffle(array) {
+  return array
+    .map(value => [Math.random(), value])
+    .sort((a,b) => a[0] - b[0])
+    .map(pair => pair[1]);
+}
+
+function cloneAndShuffle(pool) {
+  return shuffle(pool).map(q => ({
+    ...q,
+    answers: shuffle(q.answers.map(a => ({...a})))
+  }));
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function startAttempt(pool) {
+  activeQuestions = cloneAndShuffle(pool);
+  currentIndex = 0;
+  score = 0;
+  locked = false;
+  attemptResults = [];
+  wrongQuestionIds = [];
+  showScreen('quizScreen');
+  renderQuestion();
+}
+
+function startSampleTest() {
+  const selected = shuffle(DATA).slice(0, Math.min(SAMPLE_SIZE, DATA.length));
+  startAttempt(selected);
+}
+
+function startFullTest() {
+  startAttempt(DATA);
+}
+
+function startWrongTest() {
+  const pool = DATA.filter(q => wrongQuestionIds.includes(q.id));
+  if (!pool.length) {
+    goHome();
+    return;
+  }
+  startAttempt(pool);
+}
+
+function renderQuestion() {
+  locked = false;
+  const q = activeQuestions[currentIndex];
+  const letters = ['A','B','C','D'];
+  const card = document.getElementById('questionCard');
+
+  document.getElementById('counterPill').textContent =
+    'Pytanie ' + (currentIndex + 1) + ' / ' + activeQuestions.length;
+  document.getElementById('scorePill').textContent = 'Wynik: ' + score;
+  document.getElementById('progress').style.width =
+    ((currentIndex) / activeQuestions.length * 100) + '%';
+
+  card.innerHTML = '';
+
+  const category = document.createElement('div');
+  category.className = 'category';
+  category.textContent = 'Psychopatologia pracy';
+  card.appendChild(category);
+
+  const title = document.createElement('h2');
+  title.className = 'question-title';
+  title.textContent = q.q;
+  card.appendChild(title);
+
+  q.answers.forEach((answer, answerIndex) => {
+    const option = document.createElement('div');
+    option.className = 'answer';
+    option.innerHTML =
+      '<div class="letter">' + letters[answerIndex] + '</div>' +
+      '<div class="answer-text">' + escapeHtml(answer.text) + '</div>';
+    option.onclick = () => chooseAnswer(answerIndex);
+    card.appendChild(option);
+  });
+
+  const feedback = document.createElement('div');
+  feedback.id = 'feedback';
+  feedback.className = 'feedback';
+  card.appendChild(feedback);
+
+  const actions = document.createElement('div');
+  actions.className = 'question-actions';
+  actions.innerHTML = `
+    <div class="action-group">
+      <button class="report-button" onclick="reportQuestion()">Zgłoś pytanie</button>
+      <button class="small-button" onclick="skipQuestion()">Pomiń</button>
+    </div>
+    <div class="action-group">
+      <button id="nextButton" class="primary-button" onclick="nextQuestion()" disabled>Następne</button>
+    </div>
+  `;
+  card.appendChild(actions);
+}
+
+function chooseAnswer(answerIndex) {
+  if (locked) return;
+  locked = true;
+
+  const q = activeQuestions[currentIndex];
+  const chosen = q.answers[answerIndex];
+  const correct = q.answers.find(a => a.correct);
+  const isCorrect = !!chosen.correct;
+  const displayedAnswers = [...document.querySelectorAll('.answer')];
+
+  displayedAnswers.forEach((element, index) => {
+    element.classList.add('locked');
+    if (q.answers[index].correct) element.classList.add('correct');
+  });
+
+  if (!isCorrect) {
+    displayedAnswers[answerIndex].classList.add('wrong');
+    wrongQuestionIds.push(q.id);
+  } else {
+    score += 1;
+  }
+
+  attemptResults.push({
+    id: q.id,
+    q: q.q,
+    ok: isCorrect,
+    chosen: chosen.text,
+    correct: correct.text
+  });
+
+  const feedback = document.getElementById('feedback');
+  feedback.className = 'feedback ' + (isCorrect ? 'good' : 'bad');
+  feedback.textContent = isCorrect
+    ? 'Dobrze ✅'
+    : 'Źle ❌ — poprawna odpowiedź jest podświetlona na zielono.';
+
+  document.getElementById('scorePill').textContent = 'Wynik: ' + score;
+  document.getElementById('nextButton').disabled = false;
+}
+
+function skipQuestion() {
+  if (locked) return;
+  locked = true;
+
+  const q = activeQuestions[currentIndex];
+  const correct = q.answers.find(a => a.correct);
+  const displayedAnswers = [...document.querySelectorAll('.answer')];
+
+  displayedAnswers.forEach((element, index) => {
+    element.classList.add('locked');
+    if (q.answers[index].correct) element.classList.add('correct');
+  });
+
+  wrongQuestionIds.push(q.id);
+  attemptResults.push({
+    id: q.id,
+    q: q.q,
+    ok: false,
+    chosen: 'Pominięto',
+    correct: correct.text
+  });
+
+  const feedback = document.getElementById('feedback');
+  feedback.className = 'feedback bad';
+  feedback.textContent = 'Pominięte — poprawna odpowiedź jest podświetlona na zielono.';
+  document.getElementById('nextButton').disabled = false;
+}
+
+function nextQuestion() {
+  if (currentIndex < activeQuestions.length - 1) {
+    currentIndex += 1;
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function finishEarly() {
+  if (!confirm('Zakończyć test przed odpowiedzią na wszystkie pytania?')) return;
+
+  const answeredIds = new Set(attemptResults.map(result => result.id));
+  activeQuestions.forEach(q => {
+    if (!answeredIds.has(q.id)) {
+      const correct = q.answers.find(a => a.correct);
+      wrongQuestionIds.push(q.id);
+      attemptResults.push({
+        id: q.id,
+        q: q.q,
+        ok: false,
+        chosen: 'Nie udzielono odpowiedzi',
+        correct: correct.text
+      });
+    }
+  });
+
+  showResult();
+}
+
+function showResult() {
+  wrongQuestionIds = [...new Set(wrongQuestionIds)];
+  showScreen('resultScreen');
+
+  const total = activeQuestions.length;
+  const percent = total ? Math.round(score / total * 100) : 0;
+  document.getElementById('finalScore').textContent = score + ' / ' + total;
+  document.getElementById('finalPercent').textContent = percent + '%';
+
+  let text = 'Możesz zakończyć albo przećwiczyć jeszcze raz wyłącznie błędne pytania.';
+  if (percent === 100) text = 'Wszystkie odpowiedzi są poprawne — nie ma pytań do powtórki.';
+  else if (percent >= 80) text = 'Bardzo dobry wynik. Zostało tylko kilka pytań do utrwalenia.';
+  else if (percent >= 60) text = 'Jest dobrze, ale test z błędnych pytań pomoże utrwalić trudniejsze zagadnienia.';
+  else text = 'Uruchom test z błędnych pytań, żeby przećwiczyć dokładnie te zagadnienia, które sprawiły trudność.';
+
+  document.getElementById('resultDescription').textContent = text;
+
+  const wrongButton = document.getElementById('wrongTestButton');
+  wrongButton.hidden = wrongQuestionIds.length === 0;
+  wrongButton.textContent = wrongQuestionIds.length
+    ? 'Rozwiąż test z błędnych pytań (' + wrongQuestionIds.length + ')'
+    : 'Rozwiąż test z błędnych pytań';
+
+  const review = document.getElementById('review');
+  review.innerHTML = '<h3>Podsumowanie odpowiedzi</h3>';
+
+  attemptResults.forEach((result, index) => {
+    const item = document.createElement('div');
+    item.className = 'review-item';
+    item.innerHTML =
+      '<b>' + (index + 1) + '. ' + escapeHtml(result.q) + '</b>' +
+      '<span class="' + (result.ok ? 'ok' : 'no') + '">' +
+      (result.ok ? 'Dobrze' : 'Źle') + '</span><br>' +
+      '<small>Twoja odpowiedź: ' + escapeHtml(result.chosen) + '</small><br>' +
+      '<small>Poprawna odpowiedź: ' + escapeHtml(result.correct) + '</small>';
+    review.appendChild(item);
+  });
+}
+
+function goHome() {
+  activeQuestions = [];
+  attemptResults = [];
+  wrongQuestionIds = [];
+  showScreen('startScreen');
+}
+
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
+}
+
+function reportQuestion() {
+  const q = activeQuestions[currentIndex];
+  const host = window.location.hostname;
+  const pathParts = window.location.pathname.split('/').filter(Boolean);
+
+  let owner = '';
+  let repo = '';
+
+  if (host.endsWith('.github.io')) {
+    owner = host.replace('.github.io','');
+    repo = pathParts[0] || '';
+  }
+
+  const correct = q.answers.find(a => a.correct);
+  const title = '[Błąd w pytaniu] ' + q.q.slice(0,80);
+  const body =
+`Zgłaszam błąd w pytaniu.
+
+**Treść pytania:**
+${q.q}
+
+**Odpowiedzi:**
+${q.answers.map((answer,index) =>
+  `${String.fromCharCode(65+index)}. ${answer.text}`
+).join('\n')}
+
+**Poprawna odpowiedź według testu:**
+${correct ? correct.text : 'brak'}
+
+**Co należy poprawić?**
+Opisz tutaj błąd:
+`;
+
+  if (owner && repo) {
+    const url =
+      'https://github.com/' + owner + '/' + repo +
+      '/issues/new?title=' + encodeURIComponent(title) +
+      '&body=' + encodeURIComponent(body);
+    window.open(url,'_blank');
+    return;
+  }
+
+  alert(
+    'Przycisk będzie automatycznie tworzył zgłoszenie po opublikowaniu testu na GitHub Pages.\n\n' +
+    'Treść pytania:\n' + q.q
+  );
+}
+</script>
+</body>
+</html>
